@@ -1,15 +1,24 @@
 #include <stdio.h>
 
 int main() {
-    FILE* fp = fopen("main2.c", "r+");
-    FILE* wp = fopen("main2.txt", "w+");
+    FILE *fp;
+    FILE *output;
     char c;
-    int i = 1;
-    fprintf(wp, "01 ");
-    while ((c = getc(fp)) != EOF) {
-        c == '\n' ? fprintf(wp,"\n%02d ", ++i) : fprintf(wp, "%c", c);
+    int line_number = 1;
+    fp = fopen(__FILE__, "r");
+    output = fopen("main2.txt", "w");
+    if (fp && output){
+        fprintf(output,"%02d ", line_number);
+        while ((c = getc(fp)) != EOF){
+            fputc(c, output);
+            if (c == '\n'){
+                line_number++;
+                fprintf(output,"%02d ", line_number);
+            }
+        }
+        fclose(fp);
+        fclose(output);
     }
-    fclose(fp);
-    fclose(wp);
+    fprintf(output,"\n");
     return 0;
 }
